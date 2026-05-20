@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "src"
+version = "0.1.0"
+description = "Constructing Traceable Configurable Process Model Families for Variant Comparison"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "# authors omitted for anonymous review"}]
+license = {text = "MIT"}
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+src = "src.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["src*"]
