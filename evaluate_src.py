@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Evaluation runner for evidence_cpt / VACPD-style configurable process-tree discovery.
+Evaluation runner for src / VACPD-style configurable process-tree discovery.
 
 It evaluates the proposed package against the two essential discovery baselines
 for variant-labeled logs:
@@ -19,7 +19,7 @@ Metrics written:
   - C-DFG evidence counts and residual-localization proxy where applicable
   - runtime
 
-Run from the repository root, or set PYTHONPATH to the directory containing evidence_cpt.
+Run from the repository root, or set PYTHONPATH to the directory containing src.
 """
 
 from __future__ import annotations
@@ -36,15 +36,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Mapping, Sequence
 
-from evidence_cpt.cdfg import CDFG, SINK, SOURCE, directly_follows_counts
-from evidence_cpt.data import Case, Trace, VariantLog, depression_example_log
-from evidence_cpt.discovery import DiscoveryConfig, exact_log_tree, mine_process_tree
-from evidence_cpt.enrichment import EnrichmentConfig, EnrichmentResult, enrich_process_tree
-from evidence_cpt.metrics import residual_relation_localization
-from evidence_cpt.ptree import ACT, LOOP, PAR, SEQ, TAU, XOR, ProcessTree
+from src.cdfg import CDFG, SINK, SOURCE, directly_follows_counts
+from src.data import Case, Trace, VariantLog, depression_example_log
+from src.discovery import DiscoveryConfig, exact_log_tree, mine_process_tree
+from src.enrichment import EnrichmentConfig, EnrichmentResult, enrich_process_tree
+from src.metrics import residual_relation_localization
+from src.ptree import ACT, LOOP, PAR, SEQ, TAU, XOR, ProcessTree
 try:
     # Internal helper used only for bounded evaluation on large loop-heavy logs.
-    from evidence_cpt.ptree import _accept_trace
+    from src.ptree import _accept_trace
 except Exception:  # pragma: no cover
     _accept_trace = None
 
@@ -211,7 +211,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="Evaluate evidence_cpt against discovery baselines.")
+    p = argparse.ArgumentParser(description="Evaluate src against discovery baselines.")
     p.add_argument("--inputs", nargs="*", default=[], help="CSV files or glob patterns, e.g. examples/_prepared_variant_runs/*.csv")
     p.add_argument("--example", action="store_true", help="also evaluate the built-in depression example")
     p.add_argument("--format", choices=["auto", "trace", "event"], default="auto")
@@ -438,7 +438,7 @@ def evaluate_family(
                 coverage = ""
             elif coverage_mode == "bounded":
                 if _accept_trace is None:
-                    raise RuntimeError("coverage-mode=bounded requires evidence_cpt.ptree._accept_trace")
+                    raise RuntimeError("coverage-mode=bounded requires src.ptree._accept_trace")
                 covered = sum(
                     1 for trace in eval_traces
                     if _accept_trace(tree, tuple(trace), max_loop_depth=max_loop_depth)
